@@ -6,7 +6,7 @@ import {registrValidation, loginValidation, postCreateValidation} from './valida
 
 import {handleValidationErrors, CheckAuth} from './utils/index.js'
 import {UserController, PostController} from './Controllers/index.js'
-mongoose.connect('mongodb+srv://admin:sancho04040404@cluster0.xnz77.mongodb.net/blog?retryWrites=true&w=majority').then(()=> console.log('DB ok')).catch((err) => console.log('DB error', err))
+mongoose.connect(process.env.MONGODB_URI).then(()=> console.log('DB ok')).catch((err) => console.log('DB error', err))
 const app = express();
 
 
@@ -50,7 +50,7 @@ app.patch('/posts/:id', CheckAuth, postCreateValidation,handleValidationErrors, 
 
 
 
-app.listen(4444, (err)=> {
+app.listen(process.env.PORT || 4444, (err)=> {
     if (err) {
         return console.log(err);
     }
