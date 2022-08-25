@@ -12,8 +12,8 @@ export const register = async (req, res) => {
         const doc = new UserModal({
             email: req.body.email,
             fullName: req.body.fullName,
-            avatarUrl: req.body.avatarUrl,
             passwordHash: hash,
+            avatarUrl: req.body.avatarUrl,
     
         })
         const user = await doc.save()
@@ -28,8 +28,9 @@ export const register = async (req, res) => {
         res.json({
             ...userData,
             token
-        })  
-    } 
+        })
+    }
+
     catch(err) {
         console.log(err);
         res.status(500).json({

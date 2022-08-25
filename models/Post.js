@@ -22,6 +22,9 @@ const PostSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    commentsCount: {
+        type: Number,
+    },
     imageUrl: String, 
     
 }, 

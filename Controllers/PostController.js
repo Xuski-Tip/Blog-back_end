@@ -1,5 +1,4 @@
 import PostModel from '../models/Post.js'
-
 export const getLastTags = async (req, res) => {
     try {
         const posts = await PostModel.find().limit(5).exec();
@@ -19,7 +18,7 @@ export const getAll = async (req, res ) => {
         res.json(posts)
     }catch(err) {
         console.log(err);
-        res.status(500).json({
+        res.status(500).json({  
             message: 'Не удалось получить статьи'
         })
     }
@@ -27,7 +26,6 @@ export const getAll = async (req, res ) => {
 export const getOne = async (req, res ) => {
     try {
         const postId = req.params.id
-
         PostModel.findOneAndUpdate({
             _id: postId,
         
@@ -94,6 +92,7 @@ export const create = async (req, res) => {
             imageUrl: req.body.imageUrl,
             tags: req.body.tags.split(','),
             user: req.userId,
+            commentsCount: req.body.commentsCount
         })
 
         const post = await doc.save()
@@ -129,4 +128,40 @@ export const update = async (req, res ) => {
             message: 'Не удалось обнавить статью'
         })
     }
+}
+
+export const getSortTags = async (req, res) => {
+    try{
+        const getSortPost = await PostModel.find({tags: req.params.id}).populate('user').exec();
+        res.json(getSortPost)
+
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        })
+    }
+}
+export const getSortPosts = async(req, res) => {
+    try{
+        const getSortPost = await PostModel.find().sort({viewsCount:-1}).populate('user').exec();
+        res.json(getSortPost)
+        
+    }catch(err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        })
+    }
+}
+export const commentsCount = async(req, res) => {
+    const postId = req.params.id
+    await PostModel.updateOne({
+        _id: postId,
+    }, {
+        commentsCount: req.body.commentsCount
+    })
+    res.json({
+        success: true
+    })
 }
